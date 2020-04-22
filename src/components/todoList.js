@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TaskForm from '../components/taskForm'
 import Searching from '../components/Search'
 import TableList from '../components/tableList'
+import _ from 'lodash'
 
 
 var randomstring = require("randomstring");
@@ -43,6 +44,7 @@ class TodoList extends Component {
         else {
             this.setState({
                 isDisplayFormAdd :true,
+                taskEditing:null
                 
                               
             })
@@ -119,7 +121,7 @@ class TodoList extends Component {
         this.setState({
             taskEditing : taskEditing
         })
-        this.openFormAdd();
+        this.openTaskForm();
     }
 
     onFilterName = (name)=>{

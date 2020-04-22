@@ -26,7 +26,6 @@ componentWillMount(){
 }
 
 componentWillReceiveProps(nextProps){
-  console.log(nextProps)
   if(nextProps && nextProps.taskEditing){
     let taskEditing = nextProps.taskEditing
     this.setState({
