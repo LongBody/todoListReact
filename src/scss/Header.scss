@@ -1,0 +1,13 @@
+$colorText :white;
+.cart {
+    color: $colorText;
+    .fa-shopping-cart {
+        font-size: 20px;
+        position: absolute;
+    }
+    .numberCart {
+        position: relative;
+        bottom: 10px;
+        left: 23px;
+    }
+}

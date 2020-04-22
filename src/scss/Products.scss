@@ -1,0 +1,18 @@
+$colorText: #0e0505;
+.productCard {
+    margin-bottom: 10px;
+    margin-top: 5px;
+    transition: box-shadow .3s;
+    border-radius: 10px;
+    border: 0.5px solid #ccc;
+    background: #fff;
+    float: left;
+    .title {
+        color: $colorText
+    }
+}
+
+.productCard:hover {
+    box-shadow: 0 0 11px rgba(33, 33, 33, .2);
+    color: $colorText;
+}

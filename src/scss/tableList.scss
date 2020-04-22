@@ -1,0 +1,12 @@
+$hoverActive:rgb(107, 107, 247);
+.CenterActiveLimit {
+    text-align: center;
+    .fontSizeListActiveLimit {
+        font-size: 15px;
+        cursor: pointer;
+    }
+}
+
+.dropdown-menu>a:hover {
+    background-color: $hoverActive;
+}
