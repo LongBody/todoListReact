@@ -21,7 +21,8 @@ class Search extends Component {
     })
   }
 
-  onSearching= () =>{
+  onSearching= (event) =>{
+    event.preventDefault();
     this.props.onSearch(this.state)   
   }
 
@@ -47,9 +48,9 @@ render(){
                onChange={ this.onChange }
                onKeyPress={ this.keyPressed }
                />
-               <button className="btn-searching"><i className="fas fa-search" onClick={this.onSearching}/></button>
+               <button className="btn-searching" onClick={this.onSearching}><i className="fas fa-search" /></button>
              
-             <button type="button" className="btn btn-primary btn-sm ml-4">Arrange</button>        
+             <button type="button" className="btn btn-primary btn-sm ml-4">Arrange</button>       
            </form>        
        </div>
 
