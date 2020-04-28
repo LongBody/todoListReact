@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import '../scss/searching.scss'
+import { connect } from 'react-redux'
+import * as actions from '../actions/index'
+
 
 
 
@@ -12,6 +15,9 @@ class Search extends Component {
     }
   }
 
+
+
+
   onChange = (event)=>{
     let target = event.target;
     let name = target.name;
@@ -23,14 +29,14 @@ class Search extends Component {
 
   onSearching= (event) =>{
     event.preventDefault();
-    this.props.onSearch(this.state)   
+    this.props.onSearching(this.state)  
   }
 
   keyPressed =(event)=>{
 
-    if (event.charCode == 13) {
+    if (event.charCode === 13) {
       event.preventDefault();
-      this.props.onSearch(this.state) 
+      this.props.onSearching(this.state) 
     } 
  
   }
@@ -48,10 +54,10 @@ render(){
                onChange={ this.onChange }
                onKeyPress={ this.keyPressed }
                />
-               <button className="btn-searching" onClick={this.onSearching}><i className="fas fa-search" /></button>
-             
-             <button type="button" className="btn btn-primary btn-sm ml-4">Arrange</button>       
-           </form>        
+               <button className="btn-searching" onClick={this.onSearching}><i className="fas fa-search" /></button>      
+           </form>
+
+              
        </div>
 
        
@@ -62,4 +68,20 @@ render(){
 }
 }
 
-export default Search;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    prop: state.prop
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    onSearching: (keyword) => {
+      dispatch(actions.searchingProduct(keyword))
+    }
+  }
+}
+
+
+export default connect(mapStateToProps ,mapDispatchToProps)(Search);
+

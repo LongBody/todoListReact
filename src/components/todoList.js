@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import TaskForm from '../components/taskForm'
 import Searching from '../components/Search'
 import TableList from '../components/tableList'
+import * as actions from '../actions/index'
+import { connect } from 'react-redux'
 import _ from 'lodash'
 
 
@@ -12,16 +14,12 @@ class TodoList extends Component {
     constructor(props){
         super(props)
         this.state ={
-            task :[],
-            isDisplayFormAdd :false,
-            taskEditing :null,
             filterName : '',
             filterStatus : "Show All",
             keyword :''
         }
     }
     componentWillMount(){
-
         if(localStorage && localStorage.getItem("tasks")){
             var tasks =JSON.parse(localStorage.getItem("tasks"));
             this.setState(
@@ -31,98 +29,23 @@ class TodoList extends Component {
             )
         }
     }
+  
+    // openFormAdd = ()=>{
+    //     this.props.onOpenForm()
+    //   }
 
-   
 
-    openFormAdd= ()=>{
-        if(this.state.isDisplayFormAdd && this.state.taskEditing ===null){
-            this.setState({
-                isDisplayFormAdd :true,
-                
-            })
+      openFormAdd= ()=>{
+        if(this.props.isDisplayForm && this.props.taskEditing ===null){
+            this.props.onOpenForm()
         }
         else {
-            this.setState({
-                isDisplayFormAdd :true,
-                taskEditing:null
-                
-                              
-            })
+            this.props.onOpenForm()
+            this.props.onEditList(null)
         }
         
     }
 
-    closeTaskForm = ()=>{
-        this.setState({
-            isDisplayFormAdd :false
-        })
-    }
-
-
-    openTaskForm = ()=>{
-        this.setState({
-            isDisplayFormAdd :true
-        })
-    }
-
-
-    onSubmitForm = async (data)=>{
-        var {task} = this.state;     
-       
-
-        if(data.id === ''){
-            data.id= await randomstring.generate(7);
-            task.push(data);
-        } else {
-            var index = this.findIndex(data.id);
-            task[index] = data
-        }
-         
-       
-        this.setState({
-            task : task,
-            taskEditing :null
-
-        })
-        console.log(task)
-        localStorage.setItem("tasks" , JSON.stringify(task))
-    }
-
-    onUpdateStatus = (id)=>{
-        let {task} =this.state ;
-        let index =this.findIndex(id);
-        if(index !== -1){
-            task[index].status = ! task[index].status 
-            this.setState({
-                task:task
-            })
-        }
-        localStorage.setItem("tasks",JSON.stringify(task))
-    }
-
-    onDeleteList = (id) =>{
-        console.log(id)
-        let {task} =this.state ;
-        let index =this.findIndex(id);
-        if(index !== -1){
-            task.splice(index ,1)
-            this.setState({
-                task:task
-            })
-        }
-        localStorage.setItem("tasks",JSON.stringify(task))
-        this.closeTaskForm();
-    }
-    onEditList = (id) =>{
-        console.log(id)
-        let {task} =this.state ;
-        let index =this.findIndex(id);
-        let taskEditing = task[index] ;
-        this.setState({
-            taskEditing : taskEditing
-        })
-        this.openTaskForm();
-    }
 
     onFilterName = (name)=>{
         this.setState({
@@ -153,61 +76,24 @@ class TodoList extends Component {
     }
 
 render(){
-    var {task , isDisplayFormAdd ,taskEditing ,filterName ,filterStatus ,keyword} =this.state
-
-    if(keyword){
-        task = task.filter((item) => {
-            let kw= keyword.keyword.toLowerCase();
-            
-            return item.name.toLowerCase().indexOf(kw) !== -1
-        })
-        console.log(task)
-     }
-
-    if(filterName){
-        task =task.filter((item) => {
-            return item.name.toLowerCase().indexOf(filterName) !== -1
-        })
-    }
+    var {keyword} =this.state
+    var {isDisplayForm}= this.props
     
-    if(filterStatus){   
-        if(filterStatus === "Active")
-        task =task.filter((item) => {
-            return item.status === true
-        })
-        else if(filterStatus === "Limit"){
-            task =task.filter((item) => {
-                return item.status === false || item.status === "false"
-            })
-        }
-     }
-
     
-     
-    let checkFormAdd = isDisplayFormAdd  ? <TaskForm
-                                             closeTaskForm={this.closeTaskForm}
-                                             onSubmitForm = {this.onSubmitForm} 
-                                             taskEditing ={taskEditing}                                           
-                                             /> : ""
+
+
   return (
 
        <div className="container mt-3 mb-2">
            <div className="row">
-               <div className="col-lg-4">
-                {checkFormAdd}
-               
+               <div className={isDisplayForm === true ? "col-lg-4" : ''}>
+               <TaskForm />        
                </div>
-               <div className={isDisplayFormAdd ? "col-lg-8" : "col-lg-12"}>
-               
+
+               <div className={isDisplayForm ? "col-lg-8" : "col-lg-12"}>             
                <Searching onSearch ={ this.onSearch }/>
-               <button type="button" className="btn btn-primary btn-sm mt-2" onClick={this.openFormAdd}>+ Add Product</button> 
-               <TableList taskList ={task}
-                          onUpdateStatus = {this.onUpdateStatus}
-                          onDeleteList={this.onDeleteList}
-                          onEditList ={this.onEditList }
-                          onFilterName ={this.onFilterName}
-                          onFilterStatus ={this.onFilterStatus}
-                           />    
+               <button type="button" className="btn btn-primary btn-sm mt-2" onClick={this.openFormAdd}>+ Add Product</button>
+               <TableList/>    
                </div>
            </div>
            
@@ -221,4 +107,21 @@ render(){
 }
 }
 
-export default TodoList;
+const mapStateToProps = (state, ownProps) => {
+    return {
+      isDisplayForm: state.isDisplayForm,
+      taskEditing: state.taskEditing
+    }
+  }
+  const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+      onOpenForm: () => {
+        dispatch(actions.openForm())
+      },
+      onEditList: (task) => {
+        dispatch(actions.editList(task))
+      }
+   }
+  }
+
+export default connect(mapStateToProps , mapDispatchToProps)(TodoList);

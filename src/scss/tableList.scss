@@ -10,3 +10,19 @@ $hoverActive:rgb(107, 107, 247);
 .dropdown-menu>a:hover {
     background-color: $hoverActive;
 }
+
+tbody :hover {
+    background-color: rgb(240, 239, 239);
+}
+
+.hoverActive:hover {
+    background-color: #28a745;
+}
+
+.hoverLimit:hover {
+    background-color: #dc3545;
+}
+
+.noneHover {
+    pointer-events: none;
+}

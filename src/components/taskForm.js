@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import '../scss/taskForm.scss'
+import { connect } from 'react-redux'
+import * as actions from '../actions/index'
+
 
 
 
@@ -25,7 +28,8 @@ componentWillMount(){
   }
 }
 
-componentWillReceiveProps(nextProps){
+componentWillReceiveProps(nextProps){ 
+  console.log(nextProps)
   if(nextProps && nextProps.taskEditing){
     let taskEditing = nextProps.taskEditing
     this.setState({
@@ -63,7 +67,7 @@ onChangeForm = async (event) =>{
 
 onSubmitForm = (event)=>{
   event.preventDefault();
-  this.props.onSubmitForm(this.state)
+  this.props.onAddTask(this.state)
   this.closeTaskForm();
   this.OnClearForm();
 }
@@ -71,7 +75,7 @@ onSubmitForm = (event)=>{
 OnClearForm = ()=>{
   this.setState({
     name : '',
-    status:true
+    status:true 
   })
 }
 
@@ -79,7 +83,9 @@ OnClearForm = ()=>{
 
 render(){
   let {id} = this.state;
-  
+  let {isDisplayForm } = this.props
+  if(isDisplayForm === false) return '';
+  else{
   return (
 
 <div className="card">
@@ -122,7 +128,28 @@ render(){
 
 
   );
+  }
 }
 }
 
-export default TaskForm;
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    isDisplayForm: state.isDisplayForm,
+    taskEditing: state.taskEditing
+  }
+  
+}
+ const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    onAddTask: (task) => {
+      dispatch(actions.addTask(task))
+    },
+    closeTaskForm: () => {
+      dispatch(actions.closeForm())
+    },
+   
+  }
+}
+
+export default connect(mapStateToProps , mapDispatchToProps)(TaskForm);

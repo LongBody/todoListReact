@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Product from './components/Products'
 import Header from './components/Header'
-import Search from './components/Search'
 
 
 class App extends Component  {

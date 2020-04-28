@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import TasKItems from '../components/TaskItems';
 import '../scss/tableList.scss'
+import { connect } from 'react-redux'
+import * as actions from '../actions/index'
+
 
 
 
@@ -23,6 +26,7 @@ class TableList extends Component {
     this.setState({
       [name] : value
     })
+    
   }
 
   onChangeFilterStatus= (event)=>{
@@ -36,8 +40,36 @@ class TableList extends Component {
   }
 
 render(){
-    var task =this.props.taskList;
-    let {filterName ,filterStatus } =this.state;
+    let {task ,filterName ,filterStatus ,keyword} =this.props;
+
+
+    if(filterName){
+      task =task.filter((item) => {
+          return item.name.toLowerCase().indexOf(filterName) !== -1
+      })
+    }
+
+    if(filterStatus){   
+      if(filterStatus === "Active")
+      task =task.filter((item) => {
+          return item.status === true
+      })
+      else if(filterStatus === "Limit"){
+          task =task.filter((item) => {
+              return item.status === false || item.status === "false"
+          })
+      }
+     }
+
+     if(keyword){
+      task = task.filter((item) => {
+          let kw= keyword.keyword.toLowerCase();
+          
+          return item.name.toLowerCase().indexOf(kw) !== -1
+      })
+   }
+
+
     let listTasks=  task.map((task , index) =>{
       return <TasKItems 
         key ={task.id}
@@ -45,9 +77,6 @@ render(){
          name ={task.name}
          status ={task.status}
          task ={task}
-         onUpdateStatus ={ this.props.onUpdateStatus }
-         onDeleteList ={ this.props.onDeleteList }
-         onEditList ={ this.props.onEditList }
          >
          </TasKItems>
     })
@@ -62,8 +91,6 @@ render(){
         <th>Status</th>
         <th>Action</th>    
       </tr>
-    </thead>
-    <tbody>
       <tr>
         <td scope="row" />
         <td>
@@ -78,20 +105,42 @@ render(){
         </td>
         <td />
       </tr>
+    </thead>
+    <tbody>
+      
       {listTasks}
      
     </tbody>
   </table>
 </div>
 
-  
-
-       
- 
-
-
   );
 }
 }
 
-export default TableList;
+
+
+
+const mapStateToProps = (state) =>{
+  return {
+    task:state.task,
+    filterName:state.filterName,
+    filterStatus:state.filterStatus,
+    keyword:state.searchingProduct
+  }
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    onFilterName: (name) => {
+      dispatch(actions.filterName(name))
+    },
+    onFilterStatus: (status) => {
+      dispatch(actions.filterStatus(status))
+    }
+  }
+}
+
+
+
+export default connect(mapStateToProps ,mapDispatchToProps)(TableList);
