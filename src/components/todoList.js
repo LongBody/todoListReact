@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TaskForm from '../components/taskForm'
 import Searching from '../components/Search'
 import TableList from '../components/tableList'
+import '../scss/todoList.scss'
 import * as actions from '../actions/index'
 import { connect } from 'react-redux'
 import _ from 'lodash'
@@ -84,7 +85,7 @@ render(){
 
   return (
 
-       <div className="container mt-3 mb-2">
+       <div className="container mb-2 todoList-wrap">
            <div className="row">
                <div className={isDisplayForm === true ? "col-lg-4" : ''}>
                <TaskForm />        

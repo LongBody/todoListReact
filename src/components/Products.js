@@ -1,39 +1,65 @@
 import React, { Component } from 'react';
 import '../scss/Products.scss'
+import ProductItems from '../components//productItems'
+import { connect } from 'react-redux'
+import * as actions from '../actions/index'
+
+
 
 
 class Product extends Component {
 
-  constructor(props){
-    super(props)
-    this.buyProduct = this.buyProduct.bind(this)
-  }
 
-  buyProduct(){
-    alert("Product Name: "+this.props.title + "\nPrice: " + this.props.price + "VND")
-  }
+
 
 render(){
+  let {products , keyword} = this.props
+console.log(products)
+console.log(keyword)
+
+  if(keyword){
+    products = products.filter((item) => {
+        let kw= keyword.toLowerCase();
+        
+        return item.name.toLowerCase().indexOf(kw) !== -1
+    })
+ }
+
+
+
+
+
+  let elementProducts = products.map((pros,index )=>{
+    return  <ProductItems
+             key= {pros.id}
+             id={pros.id}
+             price ={pros.price}
+             title ={pros.name}
+             rate={pros.rating}
+             imageProduct ={pros.imageProduct}
+             >
+            </ProductItems>
+})
   return (
-
-       <div className="col-lg-3 productCard ">
-      
-         <img src={this.props.imageProduct} className="img-fluid" />
-         <div className="card-body">
-           <h5 className="card-title title"> { this.props.title }</h5>
-           <p className="card-text">{ this.props.price } VND</p>
-           <a href="#" className="btn btn-primary" onClick={ this.buyProduct } >Buy</a>
-           <a href="#" className="btn btn-success ml-1">Add to cart</a>
-         </div>
-  
+    <div className="container product-wrap">
+    <div className="row"> 
+    <div>
+          {elementProducts}
        </div>
-
-       
- 
-
+     </div>
+  </div>
+      
 
   );
 }
 }
 
-export default Product;
+const mapStateToProps = (state) =>{
+  return {
+    keyword:state.searchingNavbar
+  }
+};
+
+
+
+export default connect(mapStateToProps , null )(Product);

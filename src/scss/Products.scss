@@ -8,11 +8,39 @@ $colorText: #0e0505;
     background: #fff;
     float: left;
     .title {
-        color: $colorText
+        color: $colorText;
+        margin-bottom: 0px;
+    }
+    .fa-star {
+        font-size: 10px;
+        color: #FC9D0A;
     }
 }
 
 .productCard:hover {
     box-shadow: 0 0 11px rgba(33, 33, 33, .2);
     color: $colorText;
+}
+
+.imageProduct {
+    width: 70px;
+}
+
+.money {
+    text-align: center;
+}
+
+.cart-wrap {
+    margin-top: 90px;
+    .message-cart {
+        background-color: #a0a09f;
+    }
+}
+
+.none-hover {
+    pointer-events: none;
+}
+
+.product-wrap {
+    margin-top: 80px;
 }

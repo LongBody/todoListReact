@@ -5,6 +5,10 @@ import taskEditing from './EditTask';
 import filterName from './FilterName';
 import filterStatus from './filterStatus';
 import searchingProduct from './searchingProduct';
+import searchingNavbar from './seachingNavbar';
+import products from './products';
+import cart from './cart';
+import message from './message';
 
 const myReducer = combineReducers({
     task,
@@ -12,7 +16,11 @@ const myReducer = combineReducers({
     taskEditing,
     filterName,
     filterStatus,
-    searchingProduct
+    searchingProduct,
+    searchingNavbar,
+    products,
+    cart,
+    message,
 
 })
 

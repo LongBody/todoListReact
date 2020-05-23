@@ -1,13 +1,14 @@
-$colorText :white;
-.cart {
-    color: $colorText;
-    .fa-shopping-cart {
-        font-size: 20px;
+.cart-nav {
+    font-size: 20px;
+    color: rgb(105, 105, 52);
+    position: relative;
+    .cart-nav-quantity {
         position: absolute;
+        bottom: 5px;
+        font-size: 16px;
     }
-    .numberCart {
-        position: relative;
-        bottom: 10px;
-        left: 23px;
-    }
+}
+
+.header-wrap {
+    margin-bottom: 100px;
 }

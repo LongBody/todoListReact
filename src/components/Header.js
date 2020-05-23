@@ -1,6 +1,13 @@
 import React from 'react';
-import '../scss/Header.scss'
 import TodoList from '../components/todoList'
+import CartHeader from '../components/cartHeader'
+import ProductContainer from '../containers/ProductContainer'
+import CartContainer from '../containers/CartContainer'
+import SearchNavbar from './formSearchNavbar'
+import  '../scss/header.scss'
+import  '../scss/searching.scss'
+import logo from '../image/phonexCollapse.png'
+import Contact from '../components/contact'
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,62 +19,46 @@ import {
 function Header() {
   return (
     <Router>
-    <div>
-    <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
-      <Link to="/home" className="navbar-brand">PhoneX</Link>
-      <button className="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
-        <span className="navbar-toggler-icon" />
-      </button>
-      <div className="collapse navbar-collapse" id="collapsibleNavId">
-        <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li className="nav-item active">
-            <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
+<header className="header-wrap fixed-top" style={{backgroundColor:"#e3f2fd"}}>
+  <nav className="navbar navbar-expand-sm navbar-light container" style={{backgroundColor:"#e3f2fd"}}>
+  <Link to="/" className="navbar-brand active"><img src={logo} style={{width:130}}/></Link>
+  <button className="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+    <span className="navbar-toggler-icon" />
+  </button>
+
+ 
+  <div className="collapse navbar-collapse" id="collapsibleNavId">
+    <ul className="navbar-nav mr-auto mt-lg-0">
+        <li className="nav-item active mb-auto">
+        <Link to="/"className="nav-link ">Home</Link>
+        </li>
+        <li className="nav-item ">
+          <Link to="/todoList" className="nav-link">StoreX</Link>
+          </li>        
+      <li className="nav-item dropdown">
+        <a className="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+        <div className="dropdown-menu" aria-labelledby="dropdownId">
+          <a className="dropdown-item" href="#">Action 1</a>
+          <a className="dropdown-item" href="#">Action 2</a>
+        </div>
+      </li>
+
+      <li className="nav-item ">
+          <Link to="/contact" className="nav-link">Contact</Link>
           </li>
-          <li className="nav-item">
-            <a className="nav-link" href="#">Phone</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="#">Gear</a>
-          </li>
-          <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Products</a>
-            <div className="dropdown-menu" aria-labelledby="dropdownId">
-              <a className="dropdown-item" href="#">Iphone</a>
-              <a className="dropdown-item" href="#">Sam Sung</a>
-              <a className="dropdown-item" href="#">Xiao Mi</a>
-              <a className="dropdown-item" href="#">Oppo</a>
-            </div>
-          </li>
-          <li className="nav-item">
-          <Link to="/todoList" className="nav-link">TodoList</Link>
-          </li>
-        </ul>
-        <form className="form-inline my-2 my-lg-0">
-          <input className="form-control mr-sm-2" type="text" placeholder="Search" />
-          <button className="btn btn-outline-info my-2 my-sm-0 mr-4" type="submit">Search</button>
-        </form> 
-        <div className="cart mr-3">
-            <i className="fas fa-shopping-cart "></i>
-            <span className="numberCart">0</span>
-        </div>       
-      </div>
-    </nav>
+    </ul>
+    <SearchNavbar/>
+    <Link to="/cart"><CartHeader/></Link>
   </div>
+</nav>
 
 
-
-         <Switch>
-
-          <Route path="/todoList">
-            <TodoList/>
-          </Route>
-
-        </Switch>
-
-
-
-
-
+</header>
+          
+          <Route path="/todoList"  component={TodoList}></Route>
+          <Route path="/" exact><ProductContainer/></Route>
+          <Route path="/contact" component={Contact}></Route>
+          <Route path="/cart" component={CartContainer}></Route>
 
   </Router>
   );
